@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import Stats from 'three/addons/libs/stats.module.js';
+
 
 let camera, scene, renderer, stats, material_lines, material_particles;
 let mouseX = 0, mouseY = 0;
@@ -12,9 +12,7 @@ animate();
 
 function init() {
 
-    // Add Framerate Statistics
-    stats = new Stats();
-    //document.body.appendChild(stats.dom);
+    window.scrollTo(0, 0); // Dirtyfix for scrollpos issue
 
     // Create Camera Object
     camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 2, 2000);
@@ -24,6 +22,7 @@ function init() {
     scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x000010, 0.002);
     //scene.background = new THREE.TextureLoader().load('space.jpg');
+
 
     // Add Particles
     const geometry = new THREE.BufferGeometry();
@@ -42,11 +41,11 @@ function init() {
         vertices.push(x, y, z);
     }
 */
-    let numLayers = 10;
-    let numWeights = 7;
-    let numDepth = 20
-    let spacingL = 70;
-    let spacingW = 60;
+    let numLayers = 8;
+    let numWeights = 8;
+    let numDepth = 10
+    let spacingL = 80;
+    let spacingW = 70;
     let spacingD = 40;
     let vec_matrix = Array.from(Array(spacingL), () => new Array(spacingW))
     for (let i = 0; i < vec_matrix.length; i++) {
@@ -70,8 +69,8 @@ function init() {
 
                 if (l > 0) {
                     for (let i = 0; i < numWeights; i++) {
-                        if (Math.random() > 0.4 && Math.abs(i - w) < 3 && Math.abs(i - d) < 3) {
-                            line_vertices.push(new THREE.Vector3(x, y, z-5))
+                        if (Math.random() > 0.5 && Math.abs(i - w) < 3 && Math.abs(i - d) < 3) {
+                            line_vertices.push(new THREE.Vector3(x, y, z - 5))
                             line_vertices.push(vec_matrix[l - 1][i][d])
                         }
                     }
@@ -84,14 +83,14 @@ function init() {
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
 
     material_particles = new THREE.PointsMaterial({ size: 8, sizeAttenuation: true, map: sprite, alphaTest: 0.5, transparent: true });
-    material_particles.color.setRGB(0.8,0.8,1);
+    material_particles.color.setRGB(0.8, 0.8, 1);
 
     const particles = new THREE.Points(geometry, material_particles);
     scene.add(particles);
 
 
     // Add Lines between Particles
-    const material_lines = new THREE.LineBasicMaterial({ 
+    const material_lines = new THREE.LineBasicMaterial({
         color: 0x1c1b22,
         linewidth: 4
     });
@@ -102,6 +101,8 @@ function init() {
     renderer = new THREE.WebGLRenderer();
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor( 0x03030a, 1 );
+    
     document.body.appendChild(renderer.domElement);
 
 
@@ -114,15 +115,24 @@ function init() {
         screen.orientation.addEventListener("change", onOrientationchange);
     }
 
+    const navlogo = document.querySelector('.nav-logo')
     const navbar = document.querySelector('.navbar')
     window.onscroll = function () {
         // pageYOffset or scrollY
-        if (window.pageYOffset > 200) {
+        if (window.pageYOffset > 400) {
+            navlogo.classList.add('scrolled')
+        } else {
+            navlogo.classList.remove('scrolled')
+        }
+        // pageYOffset or scrollY
+        if (window.pageYOffset > 400) {
             navbar.classList.add('scrolled')
         } else {
             navbar.classList.remove('scrolled')
         }
     }
+
+
 
 
 };
@@ -196,7 +206,7 @@ function animate() {
     requestAnimationFrame(animate);
 
     render();
-    stats.update();
+
 
 }
 
