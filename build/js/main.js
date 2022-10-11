@@ -22,7 +22,7 @@ function init() {
 
     // Create Scene
     scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x000010, 0.0001);
+    scene.fog = new THREE.FogExp2(0x000010, 0.002);
     //scene.background = new THREE.TextureLoader().load('space.jpg');
 
     // Add Particles
@@ -42,11 +42,11 @@ function init() {
         vertices.push(x, y, z);
     }
 */
-    let numLayers = 8;
-    let numWeights = 5;
+    let numLayers = 10;
+    let numWeights = 7;
     let numDepth = 20
-    let spacingL = 50;
-    let spacingW = 50;
+    let spacingL = 70;
+    let spacingW = 60;
     let spacingD = 40;
     let vec_matrix = Array.from(Array(spacingL), () => new Array(spacingW))
     for (let i = 0; i < vec_matrix.length; i++) {
@@ -61,17 +61,17 @@ function init() {
 
                 let startX = -((numLayers * spacingL) / 2) + spacingL / 2;
                 let startY = -((numWeights * spacingW) / 2) - spacingW / 2;
-                const x = startX + (l * spacingL);
-                const y = startY + (w * spacingW);
-                const z = 900 + (Math.random() * 0) - (d * spacingD);
+                const x = startX + (l * spacingL) + (Math.random() * 50);
+                const y = startY + (w * spacingW) + (Math.random() * 50);
+                const z = 800 + (Math.random() * 0) - (d * spacingD);
                 vertices.push(x, y, z);
 
                 vec_matrix[l][w][d] = new THREE.Vector3(x, y, z)
 
                 if (l > 0) {
                     for (let i = 0; i < numWeights; i++) {
-                        if (Math.random() > 0.5 && Math.abs(i - w) < 3) {
-                            line_vertices.push(new THREE.Vector3(x, y, z))
+                        if (Math.random() > 0.4 && Math.abs(i - w) < 3 && Math.abs(i - d) < 3) {
+                            line_vertices.push(new THREE.Vector3(x, y, z-5))
                             line_vertices.push(vec_matrix[l - 1][i][d])
                         }
                     }
@@ -84,14 +84,17 @@ function init() {
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
 
     material_particles = new THREE.PointsMaterial({ size: 8, sizeAttenuation: true, map: sprite, alphaTest: 0.5, transparent: true });
-    material_particles.color.setRGB(1,1,1);
+    material_particles.color.setRGB(0.8,0.8,1);
 
     const particles = new THREE.Points(geometry, material_particles);
     scene.add(particles);
 
 
     // Add Lines between Particles
-    const material_lines = new THREE.LineBasicMaterial({ color: 0x444444 });
+    const material_lines = new THREE.LineBasicMaterial({ 
+        color: 0x1c1b22,
+        linewidth: 4
+    });
     const geometry_lines = new THREE.BufferGeometry().setFromPoints(line_vertices);
     const line = new THREE.Line(geometry_lines, material_lines)
     scene.add(line);
