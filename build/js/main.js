@@ -60,8 +60,8 @@ function init() {
 
                 let startX = -((numLayers * spacingL) / 2) + spacingL / 2;
                 let startY = -((numWeights * spacingW) / 2) - spacingW / 2;
-                const x = startX + (l * spacingL) + (Math.random() * 50);
-                const y = startY + (w * spacingW) + (Math.random() * 50);
+                const x = startX + (l * spacingL) + ((Math.random()-0.5) * 40);
+                const y = startY + (w * spacingW) + ((Math.random()-0.5) * 40);
                 const z = 800 + (Math.random() * 0) - (d * spacingD);
                 vertices.push(x, y, z);
 
@@ -132,34 +132,6 @@ function init() {
 };
 
 
-function createLineGeometry() {
-
-    const geometry = new THREE.BufferGeometry();
-    const vertices = [];
-
-    const vertex = new THREE.Vector3();
-
-    for (let i = 0; i < 1500; i++) {
-
-        vertex.x = Math.random() * 2 - 1;
-        vertex.y = Math.random() * 2 - 1;
-        vertex.z = Math.random() * 2 - 1;
-        vertex.normalize();
-        vertex.multiplyScalar(1);
-
-        vertices.push(vertex.x, vertex.y, vertex.z);
-
-        vertex.multiplyScalar(Math.random() * 0.09 + 1);
-
-        vertices.push(vertex.x, vertex.y, vertex.z);
-
-    }
-
-    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-
-    return geometry;
-
-}
 
 function onWindowResize() {
     let isMobile = window.matchMedia("(pointer:coarse)").matches;
