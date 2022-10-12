@@ -69,8 +69,8 @@ function init() {
 
                 if (l > 0) {
                     for (let i = 0; i < numWeights; i++) {
-                        if (Math.random() > 0.5 && Math.abs(i - w) < 3 && Math.abs(i - d) < 3) {
-                            line_vertices.push(new THREE.Vector3(x, y, z - 5))
+                        if (Math.random() > 0.5 && Math.abs(i - w) < 2 ) {
+                            line_vertices.push(new THREE.Vector3(x+0.5, y+0.5, z - 1))
                             line_vertices.push(vec_matrix[l - 1][i][d])
                         }
                     }
@@ -82,7 +82,7 @@ function init() {
 
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
 
-    material_particles = new THREE.PointsMaterial({ size: 8, sizeAttenuation: true, map: sprite, alphaTest: 0.5, transparent: true });
+    material_particles = new THREE.PointsMaterial({ size: 4, sizeAttenuation: true, map: sprite, alphaTest: 0.5, transparent: true });
     material_particles.color.setRGB(0.8, 0.8, 1);
 
     const particles = new THREE.Points(geometry, material_particles);
@@ -118,12 +118,6 @@ function init() {
     const navlogo = document.querySelector('.nav-logo')
     const navbar = document.querySelector('.navbar')
     window.onscroll = function () {
-        // pageYOffset or scrollY
-        if (window.pageYOffset > 400) {
-            navlogo.classList.add('scrolled')
-        } else {
-            navlogo.classList.remove('scrolled')
-        }
         // pageYOffset or scrollY
         if (window.pageYOffset > 400) {
             navbar.classList.add('scrolled')
